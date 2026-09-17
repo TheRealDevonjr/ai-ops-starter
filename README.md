@@ -25,7 +25,7 @@ Copy `SETUP.md` into a fresh folder of your own first — don't run Claude Code 
 **Option B — copy/paste, no clone**
 Open `brain-layer/SETUP.md` on GitHub, copy the whole file, and paste it as your first message in a fresh Claude Code session started in an empty folder. Claude will ask you a handful of setup questions and scaffold everything from there.
 
-Do the same for `business-layer/SETUP.md` when you're ready to add businesses (run it from inside, or pointed at, the vault folder the brain layer created, if you want them linked).
+Do the same for `business-layer/SETUP.md` when you're ready to add businesses (run it from inside, or pointed at, the vault folder the brain layer created, if you want them linked). If you're copying both layers' files into the same folder, give the second one a different filename (e.g. `BUSINESS-SETUP.md`) — both layers ship a file called `SETUP.md`, and copying the second on top of the first silently overwrites it.
 
 ## What you end up with
 
