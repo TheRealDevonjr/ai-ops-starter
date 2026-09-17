@@ -4,6 +4,8 @@ You are Claude Code. You have just been handed this file by a person who wants t
 
 Follow these steps in order. Ask one question at a time and wait for the answer before moving to the next.
 
+**Before anything else:** check whether the current working directory is a clone of the `ai-ops-starter` template repo (e.g. it contains a sibling `brain-layer/` folder, or `git remote -v` points at the template). If so, stop and tell the person: don't run setup from inside the template clone — copy this `SETUP.md` into their brain-layer agent's own folder (or a new empty folder, if running standalone) first, then run Claude Code from there.
+
 ## Step 1 — Check for an existing brain layer
 
 Ask: "Have you already set up a brain-layer vault (a head agent with its own vault)? If so, what's the path to it?"

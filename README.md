@@ -14,10 +14,13 @@ Each layer folder contains a single `SETUP.md`. That file is written as a set of
 **Option A — clone the repo**
 ```bash
 git clone <this-repo-url>
-cd ai-ops-starter/brain-layer
+mkdir ~/my-agent && cp ai-ops-starter/brain-layer/SETUP.md ~/my-agent/
+cd ~/my-agent
 claude
 ```
 Then tell Claude: `Read SETUP.md and set this up for me.`
+
+Copy `SETUP.md` into a fresh folder of your own first — don't run Claude Code directly inside the cloned template repo. Setup creates your personal `CLAUDE.md` and vault in the current working directory, and those shouldn't end up mixed into the shared template repo.
 
 **Option B — copy/paste, no clone**
 Open `brain-layer/SETUP.md` on GitHub, copy the whole file, and paste it as your first message in a fresh Claude Code session started in an empty folder. Claude will ask you a handful of setup questions and scaffold everything from there.

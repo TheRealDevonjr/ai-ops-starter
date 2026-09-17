@@ -4,13 +4,16 @@ Adds one or more generic businesses, each with its own dedicated agent that take
 
 ## Run it
 
+If you already ran the `brain-layer` setup, run this from inside that agent's own folder (not from inside the cloned template repo) so it can find and link into the existing vault. If running standalone, copy `SETUP.md` into a fresh, empty folder of your own first.
+
 ```bash
-cd business-layer
+cp SETUP.md ~/my-agent/   # or wherever your brain-layer folder is
+cd ~/my-agent
 claude
 ```
 Then say: `Read SETUP.md and set this up for me.`
 
-Or paste the full contents of `SETUP.md` as your first message in a fresh Claude Code session.
+Or skip cloning entirely: paste the full contents of `SETUP.md` as your first message in a fresh Claude Code session.
 
 Claude will ask how many businesses you want to set up, then for each one: its name, what it does, and the name and pronouns of the agent that runs it. If you've already run the `brain-layer` setup, point it at that vault and it will cross-link the businesses into it; otherwise it creates a small standalone index.
 

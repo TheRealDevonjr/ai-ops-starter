@@ -4,13 +4,16 @@ Stands up one head agent with persistent memory. No businesses attached — just
 
 ## Run it
 
+Copy `SETUP.md` into a fresh, empty folder of your own first — don't run this from inside the cloned template repo, since setup will create your personal `CLAUDE.md` and vault in the current working directory.
+
 ```bash
-cd brain-layer
+mkdir ~/my-agent && cp SETUP.md ~/my-agent/
+cd ~/my-agent
 claude
 ```
 Then say: `Read SETUP.md and set this up for me.`
 
-Or paste the full contents of `SETUP.md` as your first message in a fresh Claude Code session.
+Or skip cloning entirely: paste the full contents of `SETUP.md` as your first message in a fresh Claude Code session started in an empty folder.
 
 Claude will ask you a few questions (agent name, pronouns, tone, where you want the vault) and then create:
 

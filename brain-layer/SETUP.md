@@ -4,6 +4,8 @@ You are Claude Code. You have just been handed this file by a person who wants t
 
 Follow these steps in order. Ask one question at a time and wait for the answer before moving to the next — do not dump the whole list of questions at once.
 
+**Before anything else:** check whether the current working directory is a clone of the `ai-ops-starter` template repo (e.g. it contains a sibling `business-layer/` folder, or `git remote -v` points at the template). If so, stop and tell the person: don't run setup from inside the template clone — copy this `SETUP.md` into a new, empty folder of their own first, then run Claude Code from there. Setup will create personal files (`CLAUDE.md`, the vault) in the current working directory, and those shouldn't end up inside the shared template repo.
+
 ## Step 1 — Ask setup questions
 
 Ask the person, one at a time:
