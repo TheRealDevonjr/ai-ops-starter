@@ -19,4 +19,4 @@ Or skip cloning entirely: paste the full contents of `SETUP.md` as your first me
 
 Claude will ask how many businesses you want to set up, then for each one: its name, what it does, and the name and pronouns of the agent that runs it. If you've already run the `brain-layer` setup, point it at that vault and it will cross-link the businesses into it; otherwise it creates a small standalone index.
 
-You end up with one folder per business, each with an overview note and a `Jobs/` folder for that business's recurring tasks.
+You end up with one folder per business, each with an overview note (including that business's approval gate) and a `Jobs/` folder for its recurring tasks, with a job-note template to copy for each new job.

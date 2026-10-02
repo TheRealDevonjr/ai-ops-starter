@@ -39,10 +39,12 @@ Businesses/
     {{BUSINESS_1_NAME}}.md
     Jobs/
       README.md
+      Job Template.md
   02 - {{BUSINESS_2_NAME}}/
     {{BUSINESS_2_NAME}}.md
     Jobs/
       README.md
+      Job Template.md
   ... one numbered folder per business ...
 ```
 
@@ -74,6 +76,13 @@ This business is run day to day by **{{BUSINESS_N_AGENT}}** ({{BUSINESS_N_PRONOU
 
 If the head agent's `CLAUDE.md` loads the unlazy completion protocol, {{BUSINESS_N_AGENT}} follows it too: a gates ledger for substantial work, outside any git repo, with every gate proven before reporting done. A local session inherits it only when it starts in the head agent's folder or below it (see Step 5b of the business-layer template); a session started inside the vault does not. If {{BUSINESS_N_AGENT}} runs as a scheduled or cloud job that can't see local files, start its prompt with the PROTOCOL block from the business-layer template.
 
+## Approval gate
+
+{{BUSINESS_N_AGENT}} follows the head agent's business action approval gate (or, without a brain layer, this one): anything involving money (quotes, invoices, payments, ad spend) and anything that is new territory (first contact with a new person or lead, an untested approach) goes to the owner for review first. Routine actions may run on {{BUSINESS_N_AGENT}}'s judgment only in a category the owner has confirmed as proven. {{BUSINESS_N_AGENT}} never handles card numbers or other payment credentials; it flags payment problems early and the owner completes any purchase.
+
+Proven categories (each added only when the owner confirms it, with the date):
+- _None yet._
+
 ## Jobs
 
 Recurring tasks for {{BUSINESS_N_AGENT}} live in `Jobs/`. Add one note per recurring job describing what it does and how to run it.
@@ -88,7 +97,38 @@ _Nothing recorded yet._
 ```markdown
 # Jobs — {{BUSINESS_N_NAME}}
 
-One file per recurring job {{BUSINESS_N_AGENT}} is responsible for. Each job file should describe: what triggers it, what {{BUSINESS_N_AGENT}} does step by step, and what "done" looks like.
+One file per recurring job {{BUSINESS_N_AGENT}} is responsible for. Start each new job by copying `Job Template.md` and filling in every section. A job note is how {{BUSINESS_N_AGENT}} learns: corrections and working methods go into its Lessons section, so the next run starts from what was learned, not from scratch.
+```
+
+**Each `Jobs/Job Template.md`:**
+
+```markdown
+# [Job name]
+
+**The job:** one or two sentences on what this job produces and why it matters to {{BUSINESS_N_NAME}}.
+
+## Boot chain
+Read these, in order, before running the job:
+1. This note, end to end.
+2. The business overview note, `{{BUSINESS_N_NAME}}.md`, for scope and the approval gate.
+3. `Active Priorities.md`, to confirm nothing about this job changed.
+
+## The procedure
+1. [Step]
+2. [Step]
+
+## Schedule and watchdog
+- Trigger: manual, or the schedule it runs on.
+- Watchdog: what checks that each scheduled run actually succeeded, and what happens on failure. Required for anything scheduled.
+
+## Quality bar
+- [What "done right" looks like, concretely and checkably.]
+
+## Approved outputs log
+Every output the owner approves (a post, an email, a quote) is logged here verbatim, with its date, at the moment it is approved. Never edit a past entry.
+
+## Lessons
+Every correction, dated. When the first approach to a recurring step fails and another works, record the working method and the dead end to skip, so no later run pays for it twice. When the owner confirms this job as proven for running without per-item review, record that here too, with the date.
 ```
 
 ## Step 5 — Link into the brain layer, if one exists
@@ -117,4 +157,4 @@ After adding it, read the agent's saved prompt back and confirm the block is at 
 
 ## Step 6 — Confirm
 
-Tell the person what was created: the folder path, the list of businesses and their agents, and that running this file again is the way to add another business later (it will ask fresh questions and add a new numbered folder without touching the existing ones).
+Tell the person what was created: the folder path, the list of businesses and their agents, that each business has an approval gate and a job template to copy for every recurring job, and that running this file again is the way to add another business later (it will ask fresh questions and add a new numbered folder without touching the existing ones).
