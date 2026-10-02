@@ -62,8 +62,9 @@ Skip this step entirely if they said no. Each command is given for macOS and Lin
    mkdir -p ~/.claude/skills/unlazy && cp -R /tmp/unlazy-review/. ~/.claude/skills/unlazy/ && rm -rf ~/.claude/skills/unlazy/.git && echo 16671491f6679ad9378f52604d3bc2415b4120c7 > ~/.claude/skills/unlazy/.installed-commit
    ```
 
-   Windows PowerShell (run in the same window as the previous block, so `$review` is still set):
+   Windows PowerShell (self-contained, because each command may run in a fresh PowerShell process):
    ```powershell
+   $review = Join-Path $env:TEMP "unlazy-review"
    $dest = Join-Path $HOME ".claude\skills\unlazy"
    New-Item -ItemType Directory -Force $dest | Out-Null
    Copy-Item -Path (Join-Path $review "*") -Destination $dest -Recurse -Force

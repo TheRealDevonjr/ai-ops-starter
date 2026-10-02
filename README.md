@@ -46,7 +46,7 @@ Copy-Item "ai-ops-starter\brain-layer\SETUP.md" "$HOME\my-agent\"
 Set-Location "$HOME\my-agent"
 claude
 ```
-Then tell Claude: `Read SETUP.md and set this up for me.`
+Replace `<this-repo-url>` with the address from the green **Code** button on this repo's GitHub page. Then tell Claude: `Read SETUP.md and set this up for me.`
 
 Copy `SETUP.md` into a fresh folder of your own first — don't run Claude Code directly inside the cloned template repo. Setup creates your personal `CLAUDE.md` and vault in the current working directory, and those shouldn't end up mixed into the shared template repo.
 
