@@ -186,6 +186,7 @@ _Nothing tracked yet. Add open items here as they come up; remove them once clos
 -
 
 ### Profile Updates
+<!-- Any change made to the Profile section of VAULT-INDEX.md this session (a new preference, a corrected detail), one line each. -->
 -
 ```
 

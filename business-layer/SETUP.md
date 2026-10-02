@@ -85,7 +85,7 @@ Proven categories (each added only when the owner confirms it, with the date):
 
 ## Jobs
 
-Recurring tasks for {{BUSINESS_N_AGENT}} live in `Jobs/`. Add one note per recurring job describing what it does and how to run it.
+Recurring tasks for {{BUSINESS_N_AGENT}} live in `Jobs/`, one note per job, each started from `Jobs/Job Template.md`.
 
 ## Notes
 
@@ -111,7 +111,7 @@ One file per recurring job {{BUSINESS_N_AGENT}} is responsible for. Start each n
 Read these, in order, before running the job:
 1. This note, end to end.
 2. The business overview note, `{{BUSINESS_N_NAME}}.md`, for scope and the approval gate.
-3. `Active Priorities.md`, to confirm nothing about this job changed.
+3. `Active Priorities.md` in the brain-layer vault, if there is one, to confirm nothing about this job changed.
 
 ## The procedure
 1. [Step]
