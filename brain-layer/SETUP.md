@@ -38,7 +38,7 @@ Ask: "Do you already have Obsidian installed? The vault this agent uses is a pla
 
 ## Step 2b: Install the completion protocol (only if `{{USE_PROTOCOL}}` is yes)
 
-Skip this step entirely if they said no.
+Skip this step entirely if they said no. The commands below are for macOS and Linux; on Windows, run the equivalent steps (a temporary folder, a copy that leaves out `.git`) in PowerShell or Git Bash.
 
 1. Check that Node.js 16 or newer is installed (`node -v`). If it isn't, tell them the protocol's checker needs Node (https://nodejs.org), set `{{USE_PROTOCOL}}` to no for now, and continue without it.
 2. If `~/.claude/skills/unlazy/.installed-commit` already exists and holds the commit below, it's already installed: skip to item 5.
@@ -51,10 +51,10 @@ Skip this step entirely if they said no.
 4. Read `SKILL.md`, `README.md` and `SECURITY.md` in that folder in full before installing, and tell the person in two or three sentences what the skill does and that it makes no network calls of its own. Then copy it into place and record the commit:
 
    ```bash
-   mkdir -p ~/.claude/skills/unlazy && rsync -a --exclude .git /tmp/unlazy-review/ ~/.claude/skills/unlazy/ && echo 16671491f6679ad9378f52604d3bc2415b4120c7 > ~/.claude/skills/unlazy/.installed-commit
+   mkdir -p ~/.claude/skills/unlazy && cp -R /tmp/unlazy-review/. ~/.claude/skills/unlazy/ && rm -rf ~/.claude/skills/unlazy/.git && echo 16671491f6679ad9378f52604d3bc2415b4120c7 > ~/.claude/skills/unlazy/.installed-commit
    ```
 
-5. Smoke-test it without executing anything: write a one-gate ledger in a temporary folder and run `node ~/.claude/skills/unlazy/scripts/gate-check.mjs --status <that file>`. It should report the gate as unmet and exit without running any command.
+5. Smoke-test it without executing anything: write a one-gate ledger in a temporary folder and run `node ~/.claude/skills/unlazy/scripts/gate-check.mjs --status <that file>`. It should report the gate as unmet and exit without running any command. Exit code 1 is the expected result here, because the test gate is deliberately unmet; it is not a failed install.
 6. Do **not** run its `install-hooks.mjs`. The optional Stop hook blocks the agent from ending a turn until every gate is met, which conflicts with the "close the loop" rule below. Only install it later if the person explicitly asks for it, knowing that trade-off.
 
 ## Step 3 — Create the boot config

@@ -72,7 +72,7 @@ This business is run day to day by **{{BUSINESS_N_AGENT}}** ({{BUSINESS_N_PRONOU
 
 ## Completion protocol
 
-If the head agent's `CLAUDE.md` loads the unlazy completion protocol, {{BUSINESS_N_AGENT}} follows it too: a gates ledger for substantial work, outside any git repo, with every gate proven before reporting done. A local session started inside the head agent's folder inherits it automatically. If {{BUSINESS_N_AGENT}} runs as a scheduled or cloud job that can't see local files, start its prompt with the PROTOCOL block from the business-layer template.
+If the head agent's `CLAUDE.md` loads the unlazy completion protocol, {{BUSINESS_N_AGENT}} follows it too: a gates ledger for substantial work, outside any git repo, with every gate proven before reporting done. A local session inherits it only when it starts in the head agent's folder or below it (see Step 5b of the business-layer template); a session started inside the vault does not. If {{BUSINESS_N_AGENT}} runs as a scheduled or cloud job that can't see local files, start its prompt with the PROTOCOL block from the business-layer template.
 
 ## Jobs
 
@@ -99,6 +99,8 @@ If `{{VAULT_PATH}}` was provided in Step 1, open its `VAULT-INDEX.md` and update
 
 If the head agent's `CLAUDE.md` loads the unlazy completion protocol (brain-layer setup, startup step 4), every business agent follows the same protocol. Nothing extra is needed for agents that run as local Claude Code sessions inside the head agent's folder or a subfolder of it, because Claude Code loads `CLAUDE.md` files from the working directory and every parent directory.
 
+Watch the folder a business agent starts in. The business folders created above live in the vault, which is usually a different folder from the head agent's (where its `CLAUDE.md` is). A session started inside the vault does not load the head agent's `CLAUDE.md`, so it would skip the protocol. Either start business agents from the head agent's folder, or put a `CLAUDE.md` in the folder they start in that carries the same startup step 4 line.
+
 A scheduled or cloud agent (for example a Claude Code cloud routine) runs somewhere that can't see local files or installed skills. When you create one for a business, start its prompt with this block, unchanged:
 
 ```text
@@ -106,7 +108,7 @@ PROTOCOL (standing rule; applies before any other step):
 1. Fetch the unlazy skill at its reviewed commit: `git init -q /tmp/unlazy && git -C /tmp/unlazy fetch -q --depth 1 https://github.com/Leonxlnx/unlazy 16671491f6679ad9378f52604d3bc2415b4120c7 && git -C /tmp/unlazy checkout -q FETCH_HEAD`. Read `/tmp/unlazy/SKILL.md` in full and follow it for this run.
 2. Write this run's gates ledger at `/tmp/unlazy-run/GATES.md` (outside the repository; never commit it), with one gate per required outcome of the task below. Lint it with `node /tmp/unlazy/scripts/gate-lint.mjs`, run only CHECK commands you wrote yourself with `--approve`, and do not report done while any gate is unmet.
 3. Never install unlazy's Stop hook.
-4. If the fetch fails, say so plainly in your final summary and still apply the same discipline by hand: list every required outcome, verify each one directly before reporting, and report anything unmet as unmet.
+4. If the fetch fails or Node.js isn't available, say so plainly in your final summary and still apply the same discipline by hand: list every required outcome, verify each one directly before reporting, and report anything unmet as unmet.
 
 ---
 ```
