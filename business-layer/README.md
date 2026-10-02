@@ -8,9 +8,17 @@ If you already ran the `brain-layer` setup, run this from inside that agent's ow
 
 **Copy it under a different name if a `SETUP.md` already exists there** (e.g. from the brain-layer setup) — otherwise the copy silently overwrites it:
 
+macOS or Linux (Terminal):
 ```bash
 cp SETUP.md ~/my-agent/BUSINESS-SETUP.md   # or wherever your brain-layer folder is
 cd ~/my-agent
+claude
+```
+
+Windows (PowerShell):
+```powershell
+Copy-Item "SETUP.md" "$HOME\my-agent\BUSINESS-SETUP.md"   # or wherever your brain-layer folder is
+Set-Location "$HOME\my-agent"
 claude
 ```
 Then say: `Read BUSINESS-SETUP.md and set this up for me.`

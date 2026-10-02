@@ -38,14 +38,22 @@ Ask: "Do you already have Obsidian installed? The vault this agent uses is a pla
 
 ## Step 2b: Install the completion protocol (only if `{{USE_PROTOCOL}}` is yes)
 
-Skip this step entirely if they said no. The commands below are for macOS and Linux; on Windows, run the equivalent steps (a temporary folder, a copy that leaves out `.git`) in PowerShell or Git Bash.
+Skip this step entirely if they said no. Each command is given for macOS and Linux (bash) and for Windows PowerShell. On Windows with Git for Windows installed, Claude Code runs commands in Git Bash, where the bash versions work as written; use the PowerShell versions only if your shell is PowerShell.
 
 1. Check that Node.js 16 or newer is installed (`node -v`). If it isn't, tell them the protocol's checker needs Node (https://nodejs.org), set `{{USE_PROTOCOL}}` to no for now, and continue without it.
-2. If `~/.claude/skills/unlazy/.installed-commit` already exists and holds the commit below, it's already installed: skip to item 5.
+2. If `~/.claude/skills/unlazy/.installed-commit` (on Windows, `$HOME\.claude\skills\unlazy\.installed-commit`) already exists and holds the commit below, it's already installed: skip to item 5.
 3. Fetch the skill at the exact commit this template was reviewed against, into a temporary folder (not the final location yet):
 
    ```bash
    git init -q /tmp/unlazy-review && git -C /tmp/unlazy-review fetch -q --depth 1 https://github.com/Leonxlnx/unlazy 16671491f6679ad9378f52604d3bc2415b4120c7 && git -C /tmp/unlazy-review checkout -q FETCH_HEAD
+   ```
+
+   Windows PowerShell:
+   ```powershell
+   $review = Join-Path $env:TEMP "unlazy-review"
+   git init -q $review
+   git -C $review fetch -q --depth 1 https://github.com/Leonxlnx/unlazy 16671491f6679ad9378f52604d3bc2415b4120c7
+   git -C $review checkout -q FETCH_HEAD
    ```
 
 4. Read `SKILL.md`, `README.md` and `SECURITY.md` in that folder in full before installing, and tell the person in two or three sentences what the skill does and that it makes no network calls of its own. Then copy it into place and record the commit:
@@ -54,7 +62,16 @@ Skip this step entirely if they said no. The commands below are for macOS and Li
    mkdir -p ~/.claude/skills/unlazy && cp -R /tmp/unlazy-review/. ~/.claude/skills/unlazy/ && rm -rf ~/.claude/skills/unlazy/.git && echo 16671491f6679ad9378f52604d3bc2415b4120c7 > ~/.claude/skills/unlazy/.installed-commit
    ```
 
-5. Smoke-test it without executing anything: write a one-gate ledger in a temporary folder and run `node ~/.claude/skills/unlazy/scripts/gate-check.mjs --status <that file>`. It should report the gate as unmet and exit without running any command. Exit code 1 is the expected result here, because the test gate is deliberately unmet; it is not a failed install.
+   Windows PowerShell (run in the same window as the previous block, so `$review` is still set):
+   ```powershell
+   $dest = Join-Path $HOME ".claude\skills\unlazy"
+   New-Item -ItemType Directory -Force $dest | Out-Null
+   Copy-Item -Path (Join-Path $review "*") -Destination $dest -Recurse -Force
+   Remove-Item -Path (Join-Path $dest ".git") -Recurse -Force -ErrorAction SilentlyContinue
+   Set-Content -Path (Join-Path $dest ".installed-commit") -Value "16671491f6679ad9378f52604d3bc2415b4120c7"
+   ```
+
+5. Smoke-test it without executing anything: write a one-gate ledger in a temporary folder and run `node ~/.claude/skills/unlazy/scripts/gate-check.mjs --status <that file>` (in PowerShell: `node "$HOME\.claude\skills\unlazy\scripts\gate-check.mjs" --status <that file>`). It should report the gate as unmet and exit without running any command. Exit code 1 is the expected result here, because the test gate is deliberately unmet; it is not a failed install.
 6. Do **not** run its `install-hooks.mjs`. The optional Stop hook blocks the agent from ending a turn until every gate is met, which conflicts with the "close the loop" rule below. Only install it later if the person explicitly asks for it, knowing that trade-off.
 
 ## Step 3 — Create the boot config
@@ -80,7 +97,7 @@ At the start of every session:
 1. Read `VAULT-INDEX.md` at the vault root.
 2. Check the most recent daily note in `01 - Daily Notes/`; backfill it if you have context it's missing.
 3. Scan `Active Priorities.md` for what's currently open.
-4. Load the **unlazy** skill before any work: invoke it through the Skill tool as `unlazy`, or read `~/.claude/skills/unlazy/SKILL.md` if it isn't listed. Apply it within its own scope: write gates for substantial, multi-part, or audit work, and skip them for trivial edits and factual replies. Headless single-response requests (a scripted prompt that asks only for JSON or text back) count as factual replies: answer them directly, without loading the skill or writing files. Keep every gates ledger in a scratch directory outside any git repo, so it is never committed. It is pinned to a reviewed commit (see `~/.claude/skills/unlazy/.installed-commit`); re-review before updating it. Never install its optional Stop hook without {{USER_NAME}}'s explicit consent, because it blocks ending a turn and so conflicts with "close the loop" below. Only approve check commands you wrote or fully read.
+4. Load the **unlazy** skill before any work: invoke it through the Skill tool as `unlazy`, or read `~/.claude/skills/unlazy/SKILL.md` (on Windows, `%USERPROFILE%\.claude\skills\unlazy\SKILL.md`) if it isn't listed. Apply it within its own scope: write gates for substantial, multi-part, or audit work, and skip them for trivial edits and factual replies. Headless single-response requests (a scripted prompt that asks only for JSON or text back) count as factual replies: answer them directly, without loading the skill or writing files. Keep every gates ledger in a scratch directory outside any git repo, so it is never committed. It is pinned to a reviewed commit (see `~/.claude/skills/unlazy/.installed-commit`); re-review before updating it. Never install its optional Stop hook without {{USER_NAME}}'s explicit consent, because it blocks ending a turn and so conflicts with "close the loop" below. Only approve check commands you wrote or fully read.
 
 **Re-read after compaction.** This file survives compaction; `VAULT-INDEX.md` does not. If context was compacted mid-session, re-read `VAULT-INDEX.md` before continuing.
 
