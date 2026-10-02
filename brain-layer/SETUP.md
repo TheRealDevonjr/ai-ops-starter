@@ -15,6 +15,7 @@ Ask the person, one at a time:
 3. "What should I call you?" (how the agent should address the person)
 4. "What tone should [agent name] use with you?" Offer a couple of examples if helpful (e.g. "professional but blunt," "warm and casual," "formal") but let them answer freely.
 5. "Where do you want the memory vault stored?" Suggest a sensible default such as `~/Documents/[AgentName] Brain` and let them confirm or override it.
+6. "Do you want [agent name] to follow a completion protocol for substantial work? It installs the open-source unlazy skill (https://github.com/Leonxlnx/unlazy, MIT license), which makes the agent write a checklist of verifiable outcomes before big tasks and prove each one before reporting done. Small edits and quick answers are exempt." Recommend yes, but let them choose.
 
 Record the answers as:
 - `{{AGENT_NAME}}`
@@ -22,6 +23,7 @@ Record the answers as:
 - `{{USER_NAME}}`
 - `{{TONE}}`
 - `{{VAULT_PATH}}`
+- `{{USE_PROTOCOL}}` (yes or no)
 
 ## Step 2 — Check for Obsidian
 
@@ -34,9 +36,30 @@ Ask: "Do you already have Obsidian installed? The vault this agent uses is a pla
 
   Then continue with the file setup regardless of whether they've installed it yet — the files don't require Obsidian to exist, Obsidian just points at them.
 
+## Step 2b: Install the completion protocol (only if `{{USE_PROTOCOL}}` is yes)
+
+Skip this step entirely if they said no.
+
+1. Check that Node.js 16 or newer is installed (`node -v`). If it isn't, tell them the protocol's checker needs Node (https://nodejs.org), set `{{USE_PROTOCOL}}` to no for now, and continue without it.
+2. If `~/.claude/skills/unlazy/.installed-commit` already exists and holds the commit below, it's already installed: skip to item 5.
+3. Fetch the skill at the exact commit this template was reviewed against, into a temporary folder (not the final location yet):
+
+   ```bash
+   git init -q /tmp/unlazy-review && git -C /tmp/unlazy-review fetch -q --depth 1 https://github.com/Leonxlnx/unlazy 16671491f6679ad9378f52604d3bc2415b4120c7 && git -C /tmp/unlazy-review checkout -q FETCH_HEAD
+   ```
+
+4. Read `SKILL.md`, `README.md` and `SECURITY.md` in that folder in full before installing, and tell the person in two or three sentences what the skill does and that it makes no network calls of its own. Then copy it into place and record the commit:
+
+   ```bash
+   mkdir -p ~/.claude/skills/unlazy && rsync -a --exclude .git /tmp/unlazy-review/ ~/.claude/skills/unlazy/ && echo 16671491f6679ad9378f52604d3bc2415b4120c7 > ~/.claude/skills/unlazy/.installed-commit
+   ```
+
+5. Smoke-test it without executing anything: write a one-gate ledger in a temporary folder and run `node ~/.claude/skills/unlazy/scripts/gate-check.mjs --status <that file>`. It should report the gate as unmet and exit without running any command.
+6. Do **not** run its `install-hooks.mjs`. The optional Stop hook blocks the agent from ending a turn until every gate is met, which conflicts with the "close the loop" rule below. Only install it later if the person explicitly asks for it, knowing that trade-off.
+
 ## Step 3 — Create the boot config
 
-Create `CLAUDE.md` in the current working directory (this is what loads at the start of every Claude Code session in this folder) with this content, substituting every `{{...}}` placeholder with the values gathered above:
+Create `CLAUDE.md` in the current working directory (this is what loads at the start of every Claude Code session in this folder) with this content, substituting every `{{...}}` placeholder with the values gathered above. If `{{USE_PROTOCOL}}` is no, leave out startup step 4 (the unlazy line); everything else stays:
 
 ```markdown
 # Boot Config
@@ -57,6 +80,7 @@ At the start of every session:
 1. Read `VAULT-INDEX.md` at the vault root.
 2. Check the most recent daily note in `01 - Daily Notes/`; backfill it if you have context it's missing.
 3. Scan `Active Priorities.md` for what's currently open.
+4. Load the **unlazy** skill before any work: invoke it through the Skill tool as `unlazy`, or read `~/.claude/skills/unlazy/SKILL.md` if it isn't listed. Apply it within its own scope: write gates for substantial, multi-part, or audit work, and skip them for trivial edits and factual replies. Headless single-response requests (a scripted prompt that asks only for JSON or text back) count as factual replies: answer them directly, without loading the skill or writing files. Keep every gates ledger in a scratch directory outside any git repo, so it is never committed. It is pinned to a reviewed commit (see `~/.claude/skills/unlazy/.installed-commit`); re-review before updating it. Never install its optional Stop hook without {{USER_NAME}}'s explicit consent, because it blocks ending a turn and so conflicts with "close the loop" below. Only approve check commands you wrote or fully read.
 
 **Re-read after compaction.** This file survives compaction; `VAULT-INDEX.md` does not. If context was compacted mid-session, re-read `VAULT-INDEX.md` before continuing.
 
@@ -153,6 +177,7 @@ _Nothing tracked yet. Add open items here as they come up; remove them once clos
 
 Tell {{USER_NAME}}:
 - What was created and where.
+- Whether the completion protocol was installed, and if so that it loads at the start of every session.
 - If Obsidian isn't installed yet: remind them to open Obsidian and "Open folder as vault" pointed at `{{VAULT_PATH}}`.
 - That the `business-layer` folder in this same repo is the next step if they want to attach one or more businesses, each with its own dedicated agent, underneath this brain.
 

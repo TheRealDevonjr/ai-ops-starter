@@ -20,5 +20,6 @@ Claude will ask you a few questions (agent name, pronouns, tone, where you want 
 - `CLAUDE.md` — the boot config, loaded every session
 - An Obsidian vault with `VAULT-INDEX.md`, `01 - Daily Notes/`, and `Active Priorities.md`
 - Install instructions for Obsidian if you don't already have it
+- Optionally, the [unlazy](https://github.com/Leonxlnx/unlazy) completion protocol (MIT license), installed at a pinned, reviewed commit and loaded at the start of every session. Setup asks first, and needs Node.js 16 or newer.
 
 Once this is done, you can add the `business-layer` on top of it whenever you're ready.

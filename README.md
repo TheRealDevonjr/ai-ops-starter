@@ -32,5 +32,6 @@ Do the same for `business-layer/SETUP.md` when you're ready to add businesses (r
 - A boot config (`CLAUDE.md`) that loads every session and defines your agent's identity and non-negotiable rules.
 - An Obsidian vault as long-term memory — daily notes, an index, active priorities.
 - One folder per business, each with its own scope note and its own named agent, all indexed so the head agent (if present) knows they exist.
+- Optional: a completion protocol every agent follows. The brain-layer setup offers to install the open-source [unlazy](https://github.com/Leonxlnx/unlazy) skill (MIT license, by Leon Lin), pinned to a reviewed commit. For substantial work, agents write a checklist of verifiable outcomes first and prove each one before reporting done. Quick edits and simple answers are exempt, and its optional Stop hook is left off by default. The business-layer setup carries the same protocol to each business agent, including a ready-made prompt block for scheduled or cloud agents.
 
 Nothing in here is business-specific or identity-specific until you answer the setup questions — that's the point. It's the same pattern, made generic and reusable.
